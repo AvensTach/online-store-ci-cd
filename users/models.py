@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class CustomUser(AbstractUser):
+class User(AbstractUser):
     # Making email unique is crucial for an online shop
     email = models.EmailField(unique=True)
 
