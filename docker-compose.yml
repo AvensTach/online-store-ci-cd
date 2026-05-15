@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    # This maps your laptop's port 8000 to the container's port 8000
+    ports:
+      - "8000:8000"
+    # This mounts your code into the container so you don't have to rebuild every time you save a file
+    volumes:
+      - .:/app
+    # The command to start the Django development server
+    command: python manage.py runserver 0.0.0.0:8000
