@@ -7,7 +7,7 @@
   <p class="desc">{{ product.description|linebreaksbr }}</p>
 
   <p class="category">Category: 
-    <a href="{% url 'shop:catalog_by_category' product.category.id %}">
+    <a href="{% url 'shop:catalog_by_category' product.category.slug %}">
       {{ product.category.name }}
     </a>
   </p>

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Add product - CI-CD Store{% endblock %}
+{% block content %}
+  <h1>Add product</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn" type="submit">Create product</button>
+    <a href="{% url 'shop:catalog' %}">Cancel</a>
+  </form>
+{% endblock %}

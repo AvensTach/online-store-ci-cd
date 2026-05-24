@@ -7,7 +7,7 @@
   <h2>Categories</h2>
   <ul class="category-list">
     {% for cat in categories %}
-      <li><a href="{% url 'shop:catalog_by_category' cat.id %}">{{ cat.name }}</a></li>
+      <li><a href="{% url 'shop:catalog_by_category' cat.slug %}">{{ cat.name }}</a></li>
     {% empty %}
       <li>No categories yet</li>
     {% endfor %}
@@ -19,7 +19,7 @@
   <div class="grid">
     {% for p in featured %}
       <article class="card">
-        <h3><a href="{% url 'shop:product_detail' p.pk %}">{{ p.name }}</a></h3>
+        <h3><a href="{% url 'shop:product_detail' p.slug %}">{{ p.name }}</a></h3>
         <p class="price">${{ p.price }}</p>
         <p class="desc">{{ p.description|truncatechars:100 }}</p>
       </article>
