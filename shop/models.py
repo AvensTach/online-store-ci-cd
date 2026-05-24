@@ -39,3 +39,23 @@ class Product(models.Model):
                 i += 1
             self.slug = slug
         super().save(*args, **kwargs)
+
+    @property
+    def main_image(self):
+        """
+        Return the first ProductImage object or None.
+        Template can use p.main_image.image.url if not None.
+        """
+        return self.images.order_by('order').first()
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='products/%Y/%m/%d/')
+    alt_text = models.CharField(max_length=255, blank=True)
+    order = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f"Image for {self.product_id} ({self.pk})"

@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Catalog - CI-CD Store{% endblock %}
 {% block content %}
-    <div class="catalog-actions">
-        <a class="btn" href="{% url 'shop:product_add' %}">Add product</a>
-        <a class="btn" href="{% url 'shop:category_add' %}">Add category</a>
-    </div>
     <div class="catalog-layout">
         <aside class="sidebar">
             <h3>Categories</h3>
@@ -19,14 +15,34 @@
                     </li>
                 {% endfor %}
             </ul>
+
+            {% if request.user.is_authenticated and request.user.is_admin_user %}
+                <div class="admin-actions">
+                    <a class="btn" href="{% url 'shop:category_add' %}">Add category</a>
+                </div>
+            {% endif %}
         </aside>
 
         <section class="catalog">
             <h1>Catalog {% if current_category %} - {{ current_category.name }}{% endif %}</h1>
+
+            {% if request.user.is_authenticated and request.user.is_admin_user %}
+                <div class="admin-actions">
+                    <a class="btn" href="{% url 'shop:product_add' %}">Add product</a>
+                </div>
+            {% endif %}
+
             <div class="grid">
                 {% for p in products %}
                     <article class="card">
-                        <h3><a href="{% url 'shop:product_detail' p.slug %}">{{ p.name }}</a></h3>
+                        <a href="{% url 'shop:product_detail' p.slug %}" class="card-link">
+                            {% if p.main_image %}
+                                <div class="thumb"><img src="{{ p.main_image.image.url }}" alt="{{ p.name }}"></div>
+                            {% else %}
+                                <div class="thumb placeholder">No image</div>
+                            {% endif %}
+                            <h3>{{ p.name }}</h3>
+                        </a>
                         <p class="price">${{ p.price }}</p>
                         <p class="desc">{{ p.description|truncatechars:120 }}</p>
                     </article>

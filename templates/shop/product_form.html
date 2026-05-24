@@ -1,11 +1,26 @@
 {% extends "base.html" %}
-{% block title %}Add product - CI-CD Store{% endblock %}
+{% block title %}{{ action }} product - CI-CD Store{% endblock %}
 {% block content %}
-  <h1>Add product</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn" type="submit">Create product</button>
-    <a href="{% url 'shop:catalog' %}">Cancel</a>
-  </form>
+    <h1>{{ action }} product</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if action == 'Edit' %}
+            <p>
+                <label for="id_images">Add more photos (optional)</label><br>
+                <input type="file" name="images" id="id_images" multiple accept="image/*">
+            </p>
+        {% else %}
+            <p>
+                <label for="id_images">Photos</label><br>
+                <input type="file" name="images" id="id_images" multiple accept="image/*">
+            </p>
+        {% endif %}
+        <button class="btn" type="submit">{{ action }} product</button>
+        {% if product %}
+            <a href="{% url 'shop:product_detail' product.slug %}">Cancel</a>
+        {% else %}
+            <a href="{% url 'shop:catalog' %}">Cancel</a>
+        {% endif %}
+    </form>
 {% endblock %}

@@ -1,17 +1,52 @@
 {% extends "base.html" %}
 {% block title %}{{ product.name }} - CI-CD Store{% endblock %}
 {% block content %}
-<article class="product-detail">
-  <h1>{{ product.name }}</h1>
-  <p class="price">${{ product.price }}</p>
-  <p class="desc">{{ product.description|linebreaksbr }}</p>
+    <article class="product-detail">
+        <div class="product-grid">
+            <div class="gallery">
+                <button class="gallery-btn prev" aria-label="Previous image">&lsaquo;</button>
+                <div class="gallery-main">
+                    {% if images %}
+                        {% for img in images %}
+                            <img class="gallery-image {% if forloop.first %}active{% endif %}" src="{{ img.image.url }}"
+                                 alt="{{ img.alt_text|default:product.name }}">
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-photo">No photos available</div>
+                    {% endif %}
+                </div>
+                <button class="gallery-btn next" aria-label="Next image">&rsaquo;</button>
 
-  <p class="category">Category: 
-    <a href="{% url 'shop:catalog_by_category' product.category.slug %}">
-      {{ product.category.name }}
-    </a>
-  </p>
+                {% if images|length > 1 %}
+                    <div class="thumbs">
+                        {% for img in images %}
+                            <button class="thumb {% if forloop.first %}active{% endif %}"
+                                    data-index="{{ forloop.counter0 }}">
+                                <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}">
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
 
-  <p><a class="btn" href="{% url 'shop:catalog' %}">Back to catalog</a></p>
-</article>
+            <div class="product-info">
+                <h1>{{ product.name }}</h1>
+                <p class="price">${{ product.price }}</p>
+                <p class="desc">{{ product.description|linebreaksbr }}</p>
+
+                <p class="category">Category:
+                    <a href="{% url 'shop:catalog_by_category' product.category.slug %}">{{ product.category.name }}</a>
+                </p>
+
+                {% if request.user.is_authenticated and request.user.is_admin_user %}
+                    <div class="admin-actions">
+                        <a class="btn btn-secondary" href="{% url 'shop:product_edit' product.slug %}">Edit</a>
+                        <a class="btn btn-danger" href="{% url 'shop:product_delete' product.slug %}">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <p><a class="btn" href="{% url 'shop:catalog' %}">Back to catalog</a></p>
+    </article>
 {% endblock %}

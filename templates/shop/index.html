@@ -1,31 +1,31 @@
 {% extends "base.html" %}
 {% block title %}Home - CI-CD Store{% endblock %}
 {% block content %}
-<h1>Welcome to CI-CD Store</h1>
+    <h1>Welcome to CI-CD Store</h1>
 
-<section class="categories">
-  <h2>Categories</h2>
-  <ul class="category-list">
-    {% for cat in categories %}
-      <li><a href="{% url 'shop:catalog_by_category' cat.slug %}">{{ cat.name }}</a></li>
-    {% empty %}
-      <li>No categories yet</li>
-    {% endfor %}
-  </ul>
-</section>
+    <section class="categories">
+        <h2>Categories</h2>
+        <ul class="category-list">
+            {% for cat in categories %}
+                <li><a href="{% url 'shop:catalog_by_category' cat.slug %}">{{ cat.name }}</a></li>
+            {% empty %}
+                <li>No categories yet</li>
+            {% endfor %}
+        </ul>
+    </section>
 
-<section class="featured">
-  <h2>Featured products</h2>
-  <div class="grid">
-    {% for p in featured %}
-      <article class="card">
-        <h3><a href="{% url 'shop:product_detail' p.slug %}">{{ p.name }}</a></h3>
-        <p class="price">${{ p.price }}</p>
-        <p class="desc">{{ p.description|truncatechars:100 }}</p>
-      </article>
-    {% empty %}
-      <p>No products yet</p>
-    {% endfor %}
-  </div>
-</section>
+    <section class="featured">
+        <h2>Featured products</h2>
+        <div class="grid">
+            {% for p in featured %}
+                <article class="card">
+                    <h3><a href="{% url 'shop:product_detail' p.slug %}">{{ p.name }}</a></h3>
+                    <p class="price">${{ p.price }}</p>
+                    <p class="desc">{{ p.description|truncatechars:100 }}</p>
+                </article>
+            {% empty %}
+                <p>No products yet</p>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock %}
