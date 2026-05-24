@@ -10,3 +10,11 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+    def is_admin_user(self):
+        """Check if user is in 'admin' group."""
+        return self.groups.filter(name='admin').exists()
+
+    def is_customer_user(self):
+        """Check if user is in 'customer' group."""
+        return self.groups.filter(name='customer').exists()

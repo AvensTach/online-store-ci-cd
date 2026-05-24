@@ -1,24 +1,327 @@
-:root{
-  --bg:#f8f9fb;
-  --card:#ffffff;
-  --accent:#2b7cff;
-  --muted:#666;
+:root {
+    --bg: #f8f9fb;
+    --card: #ffffff;
+    --accent: #2b7cff;
+    --muted: #666;
 }
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:0;background:var(--bg);color:#222}
-.container{max-width:1100px;margin:0 auto;padding:20px}
-.site-header{background:#fff;border-bottom:1px solid #e6e6e6}
-.site-header .container{display:flex;align-items:center;justify-content:space-between}
-.brand{font-weight:700;color:var(--accent);text-decoration:none}
-.main-nav a{margin-left:16px;color:#333;text-decoration:none}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-.card{background:var(--card);padding:16px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
-.price{color:var(--accent);font-weight:600}
-.catalog-layout{display:flex;gap:20px}
-.sidebar{width:220px}
-.sidebar ul{list-style:none;padding:0}
-.sidebar a{text-decoration:none;color:#333;display:block;padding:6px 0}
-.sidebar a.active{font-weight:700;color:var(--accent)}
-.product-detail{background:var(--card);padding:20px;border-radius:8px}
-.btn{display:inline-block;background:var(--accent);color:#fff;padding:8px 12px;border-radius:6px;text-decoration:none}
-.site-footer{margin-top:40px;padding:20px;text-align:center;color:var(--muted)}
-@media (max-width:800px){.catalog-layout{flex-direction:column}.sidebar{width:auto}}
+
+body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+    margin: 0;
+    background: var(--bg);
+    color: #222
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px
+}
+
+.site-header {
+    background: #fff;
+    border-bottom: 1px solid #e6e6e6
+}
+
+.site-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.brand {
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none
+}
+
+.main-nav a {
+    margin-left: 16px;
+    color: #333;
+    text-decoration: none
+}
+
+.grid {
+    display: grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px
+}
+
+.card {
+    background: var(--card);
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05)
+}
+
+.price {
+    color: var(--accent);
+    font-weight: 600
+}
+
+.catalog-layout {
+    display: flex;
+    gap: 20px
+}
+
+.sidebar {
+    width: 220px
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 6px 0
+}
+
+.sidebar a.active {
+    font-weight: 700;
+    color: var(--accent)
+}
+
+.product-detail {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 8px
+}
+
+.btn {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none
+}
+
+.site-footer {
+    margin-top: 40px;
+    padding: 20px;
+    text-align: center;
+    color: var(--muted)
+}
+
+@media (max-width: 800px) {
+    .catalog-layout {
+        flex-direction: column
+    }
+
+    .sidebar {
+        width: auto
+    }
+}
+
+.catalog-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px
+}
+
+.catalog-actions .btn {
+    padding: 8px 10px
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns:1fr 360px;
+    gap: 20px;
+    align-items: start
+}
+
+@media (max-width: 900px) {
+    .product-grid {
+        grid-template-columns:1fr
+    }
+}
+
+.gallery {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.gallery-main {
+    width: 100%;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #f5f6f8
+}
+
+.gallery-image {
+    max-width: 100%;
+    max-height: 100%;
+    display: none;
+    object-fit: contain
+}
+
+.gallery-image.active {
+    display: block
+}
+
+.gallery-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, .85);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 20px
+}
+
+.gallery-btn.prev {
+    left: 6px
+}
+
+.gallery-btn.next {
+    right: 6px
+}
+
+.thumbs {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    overflow: auto;
+    padding-bottom: 6px
+}
+
+.thumb {
+    background: transparent;
+    border: none;
+    padding: 3px;
+    cursor: pointer;
+    border-radius: 6px
+}
+
+.thumb img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+    opacity: .9
+}
+
+.thumb.active img {
+    outline: 3px solid var(--accent);
+    opacity: 1
+}
+
+.card .thumb {
+    width: 100%;
+    height: 180px;
+    display: block;
+    background: #f5f6f8;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    border: none;
+    padding: 0;
+    cursor: auto;
+}
+
+.card .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 6px;
+}
+
+.card .thumb.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.card-link:hover h3 {
+    color: var(--accent);
+}
+
+.no-photo {
+    padding: 40px;
+    color: #777
+}
+
+.product-info .price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 8px
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block
+}
+
+.btn-secondary:hover {
+    background: #5a6268
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block
+}
+
+.btn-danger:hover {
+    background: #c82333
+}
+
+.admin-actions {
+    display: flex;
+    gap: 10px;
+    margin: 12px 0
+}
+
+.admin-actions .btn {
+    padding: 8px 10px;
+    font-size: 0.95rem
+}
+
+.confirm-delete {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 20px auto
+}
+
+.confirm-delete form {
+    margin-top: 20px
+}
+
+.confirm-delete .btn {
+    margin-right: 8px
+}
