@@ -2,10 +2,24 @@ from django.db import models
 from shop.models import Product
 from users.models import User
 
+class Cart(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Cart of {self.user.username}"
+
+    def get_total_price(self):
+        return sum(item.get_total_price() for item in self.items.all())
+
+
 class CartItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True, blank=True, related_name='items') # до речі, краще додати related_name
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f"{self.product.title} x {self.quantity}"
+        return f"{self.product.name} x {self.quantity}"
+
+    def get_total_price(self):
+        return self.product.price * self.quantity

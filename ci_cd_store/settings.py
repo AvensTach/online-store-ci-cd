@@ -25,10 +25,13 @@ load_dotenv(BASE_DIR / '.env')
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # Pull the secret key from the environment
-SECRET_KEY = os.getenv('SECRET_KEY')
+# SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = '5+p!=vokk4943)bq6n^7qu7-fo9jo&jkvu=tltanhllz!5&4t2'
 
 # Pull DEBUG from the environment, defaulting to False if not found for safety
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+#DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = True
+
 
 # Pull ALLOWED_HOSTS from the environment and split it into a list
 allowed_hosts_env = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1')
@@ -87,12 +90,21 @@ WSGI_APPLICATION = 'ci_cd_store.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.getenv('DATABASE_URL'),
+#         conn_max_age=600
+#     )
+# }
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
+
 
 
 # Password validation
@@ -148,3 +160,5 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = 'media/'
 # The absolute path to the directory where Django will save uploaded files.
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_URL = '/login/'
