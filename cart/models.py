@@ -12,9 +12,8 @@ class Cart(models.Model):
     def get_total_price(self):
         return sum(item.get_total_price() for item in self.items.all())
 
-
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True, blank=True, related_name='items') # до речі, краще додати related_name
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
 
