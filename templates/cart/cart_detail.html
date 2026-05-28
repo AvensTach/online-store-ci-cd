@@ -21,6 +21,7 @@
                 <td>${{ item.product.price }}</td>
                 <td>${{ item.get_total_price }}</td>
                 <td>
+                    <a href="{% url 'cart:add_one' item.id %}" class="btn btn-success">+</a>
                     <a href="{% url 'cart:remove_from_cart' item.id %}" class="btn btn-danger">Remove</a>
                 </td>
             </tr>

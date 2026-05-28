@@ -17,17 +17,25 @@ def add_to_cart(request, product_id):
     return redirect('cart:cart_detail')
 
 def cart_detail(request):
+    cart, _ = Cart.objects.get_or_create(user=request.user)
     if not request.user.is_authenticated:
         return redirect('login')
     items = CartItem.objects.filter(cart__user=request.user)
-    return render(request, 'cart/cart_detail.html', {'items': items})
+    return render(request, 'cart/cart_detail.html', {'cart': cart, 'items': items})
+
+def add_one(request, item_id):
+    item = get_object_or_404(CartItem, id=item_id)
+    item.quantity += 1
+    item.save()
+    return redirect('cart:cart_detail')
 
 def remove_from_cart(request, item_id):
-    # знаходимо товар у корзині
     item = get_object_or_404(CartItem, id=item_id)
 
-    # видаляємо його
-    item.delete()
+    if item.quantity > 1:
+        item.quantity -= 1
+        item.save()
+    else:
+        item.delete()
 
-    # повертаємо користувача назад у корзину
     return redirect('cart:cart_detail')
