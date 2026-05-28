@@ -14,6 +14,7 @@
         <a class="brand" href="{% url 'shop:home' %}">CI-CD Store</a>
         <nav class="main-nav">
             <a href="{% url 'shop:catalog' %}">Catalog</a>
+            <a href="{% url 'cart:cart_detail' %}">🛒 Cart</a>
             {% if request.user.is_authenticated %}
                 <span>Hello, {{ request.user.username }}</span>
 
