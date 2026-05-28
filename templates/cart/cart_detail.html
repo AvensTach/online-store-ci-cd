@@ -29,7 +29,8 @@
         </tbody>
     </table>
     <p><strong>Cart total:</strong> ${{ cart.get_total_price }}</p>
-    <a href="{% url 'orders:create_order' %}" class="btn btn-primary">Proceed to Checkout</a>
+
+    <a href="{% url 'orders:create_order' %}" class="btn btn-primary">Create Order</a>
 {% else %}
     <p>Your cart is empty.</p>
 {% endif %}
