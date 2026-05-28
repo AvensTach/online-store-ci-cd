@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Delete product - CI-CD Store{% endblock %}
+{% block content %}
+    <div class="confirm-delete">
+        <h1>Delete product?</h1>
+        <p>Are you sure you want to delete <strong>{{ product.name }}</strong>?</p>
+        <p style="color: #999; font-size: 0.9rem;">This action cannot be undone.</p>
+        <form method="post">
+            {% csrf_token %}
+            <button class="btn btn-danger" type="submit">Yes, delete</button>
+            <a class="btn" href="{% url 'shop:product_detail' product.slug %}">Cancel</a>
+        </form>
+    </div>
+{% endblock %}

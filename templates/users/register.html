@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Register - CI-CD Store{% endblock %}
+{% block content %}
+    <div class="auth-form">
+        <h1>Register</h1>
+        {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <p>
+                <label for="username">Username</label><br>
+                <input type="text" name="username" id="username" required>
+            </p>
+            <p>
+                <label for="email">Email</label><br>
+                <input type="email" name="email" id="email" required>
+            </p>
+            <p>
+                <label for="password">Password</label><br>
+                <input type="password" name="password" id="password" required>
+            </p>
+            <button class="btn" type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </div>
+{% endblock %}

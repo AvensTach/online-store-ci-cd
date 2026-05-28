@@ -1,0 +1,46 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}CI-CD Store{% endblock %}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="{% static 'shop/styles.css' %}">
+    <script defer src="{% static 'shop/scripts.js' %}"></script>
+</head>
+<body>
+<header class="site-header">
+    <div class="container">
+        <a class="brand" href="{% url 'shop:home' %}">CI-CD Store</a>
+        <nav class="main-nav">
+            <a href="{% url 'shop:catalog' %}">Catalog</a>
+            {% if request.user.is_authenticated %}
+                <span>Hello, {{ request.user.username }}</span>
+                {% if request.user.is_admin_user %}
+                    <span class="badge">Admin</span>
+                {% endif %}
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+    <div class="container">© CI-CD Store</div>
+</footer>
+</body>
+</html>
