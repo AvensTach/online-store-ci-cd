@@ -11,6 +11,7 @@ urlpatterns = [
     path('register/', register_view, name='register'),
     path('', include('shop.urls')),
     path('orders/', include('orders.urls')),
+    path('cart/', include('cart.urls')),
 ]
 
 if settings.DEBUG:
