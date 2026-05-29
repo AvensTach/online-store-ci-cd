@@ -12,17 +12,51 @@ def home(request):
         'categories': categories,
     })
 
+
 def catalog(request, category_slug=None):
     categories = Category.objects.all()
     products = Product.objects.select_related('category').all()
     current_category = None
+
+    # Category filter
     if category_slug:
         current_category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=current_category)
+
+    # Price range filter
+    price_min = request.GET.get('price_min')
+    price_max = request.GET.get('price_max')
+    if price_min:
+        try:
+            products = products.filter(price__gte=float(price_min))
+        except ValueError:
+            pass
+    if price_max:
+        try:
+            products = products.filter(price__lte=float(price_max))
+        except ValueError:
+            pass
+
+    # Ordering
+    sort_by = request.GET.get('sort_by', 'name')
+    if sort_by == 'price_asc':
+        products = products.order_by('price')
+    elif sort_by == 'price_desc':
+        products = products.order_by('-price')
+    elif sort_by == 'name_asc':
+        products = products.order_by('name')
+    elif sort_by == 'name_desc':
+        products = products.order_by('-name')
+    else:
+        products = products.order_by('name')
+
     return render(request, 'shop/catalog.html', {
         'products': products,
         'categories': categories,
         'current_category': current_category,
+        'price_min': price_min,
+        'price_max': price_max,
+        'sort_by': sort_by,
     })
 
 def product_detail(request, slug):
