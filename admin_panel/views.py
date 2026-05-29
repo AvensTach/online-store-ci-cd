@@ -17,7 +17,7 @@ def dashboard(request):
     orders_count = Order.objects.count()
     users_count = User.objects.count()
 
-    pending_orders = Order.objects.filter(status='pending').count()
+    pending_orders = Order.objects.filter(status='paid').count()
     delivered_orders = Order.objects.filter(status='delivered').count()
 
     recent_orders = Order.objects.select_related('user', 'product').order_by('-created_at')[:10]
