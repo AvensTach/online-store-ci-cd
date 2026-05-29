@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout - CI-CD Store{% endblock %}
+
+{% block content %}
+<h2>Checkout</h2>
+
+<form action="{% url 'orders:create_order' %}" method="POST">
+    {% csrf_token %}
+
+    <div class="form-group" style="margin-bottom: 15px;">
+        <label for="id_address">Shipping Address</label>
+        {{ form.address }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Order</button>
+</form>
+{% endblock %}

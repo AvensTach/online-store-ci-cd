@@ -1,0 +1,54 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}CI-CD Store{% endblock %}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="{% static 'shop/styles.css' %}">
+    <script defer src="{% static 'shop/scripts.js' %}"></script>
+</head>
+<body>
+<header class="site-header">
+    <div class="container">
+        <a class="brand" href="{% url 'shop:home' %}">CI-CD Store</a>
+        <nav class="main-nav">
+            <a href="{% url 'shop:catalog' %}">Catalog</a>
+            <a href="{% url 'cart:cart_detail' %}"><svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="16.5" cy="18.5" r="1.5"/>
+  <circle cx="9.5" cy="18.5" r="1.5"/>
+  <path d="M18 16H8a1 1 0 0 1-.958-.713L4.256 6H3a1 1 0 0 1 0-2h2a1 1 0 0 1 .958.713L6.344 6H21a1 1 0 0 1 .937 1.352l-3 8A1 1 0 0 1 18 16zm-9.256-2h8.563l2.25-6H6.944z"/>
+</svg></a>
+            {% if request.user.is_authenticated %}
+                <span>Hello, {{ request.user.username }}</span>
+
+                {% if request.user.is_admin_user or request.user.is_staff %}
+                    <span class="badge">Admin</span>
+                    <a href="{% url 'admin:index' %}" class="btn-admin">Admin Panel</a>
+                {% endif %}
+
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+    <div class="container">© CI-CD Store</div>
+</footer>
+</body>
+</html>

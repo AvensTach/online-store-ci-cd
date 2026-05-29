@@ -1,0 +1,1 @@
+web: gunicorn ci_cd_store.wsgi

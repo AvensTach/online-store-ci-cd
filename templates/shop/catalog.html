@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}Catalog - CI-CD Store{% endblock %}
+{% block content %}
+<div class="catalog-page">
+  <!-- Sidebar Toggle Button -->
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle filters">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- Overlay for mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar Drawer -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>Filters</h2>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close filters">×</button>
+    </div>
+
+    <div class="sidebar-content">
+      <!-- Categories Section -->
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+          <li>
+            <a href="{% url 'shop:catalog' %}" class="{% if not current_category %}active{% endif %}">
+              All categories
+            </a>
+          </li>
+          {% for cat in categories %}
+            <li>
+              <a href="{% url 'shop:catalog_by_category' cat.slug %}"
+                 class="{% if current_category and current_category.id == cat.id %}active{% endif %}">
+                {{ cat.name }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Price Filter Section -->
+      <div class="sidebar-section">
+        <h3>Price Range</h3>
+        <form method="get" class="filter-form" id="filterForm">
+          {% if current_category %}
+            <input type="hidden" name="category" value="{{ current_category.slug }}">
+          {% endif %}
+
+          <div class="filter-group">
+            <label for="price_min">Min Price ($)</label>
+            <input type="number" id="price_min" name="price_min" placeholder="0" value="{{ price_min }}" step="0.01">
+          </div>
+
+          <div class="filter-group">
+            <label for="price_max">Max Price ($)</label>
+            <input type="number" id="price_max" name="price_max" placeholder="10000" value="{{ price_max }}" step="0.01">
+          </div>
+
+          <button class="btn btn-filter" type="submit">Apply</button>
+        </form>
+      </div>
+
+      <!-- Sort Section -->
+      <div class="sidebar-section">
+        <h3>Sort By</h3>
+        <form method="get" class="sort-form" id="sortForm">
+          {% if current_category %}
+            <input type="hidden" name="category" value="{{ current_category.slug }}">
+          {% endif %}
+          {% if price_min %}
+            <input type="hidden" name="price_min" value="{{ price_min }}">
+          {% endif %}
+          {% if price_max %}
+            <input type="hidden" name="price_max" value="{{ price_max }}">
+          {% endif %}
+
+          <select id="sort_by" name="sort_by" onchange="document.getElementById('sortForm').submit()">
+            <option value="name_asc" {% if sort_by == 'name_asc' %}selected{% endif %}>Name (A-Z)</option>
+            <option value="name_desc" {% if sort_by == 'name_desc' %}selected{% endif %}>Name (Z-A)</option>
+            <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price (Low to High)</option>
+            <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price (High to Low)</option>
+          </select>
+        </form>
+      </div>
+
+      <!-- Admin Section -->
+      {% if request.user.is_authenticated and request.user.is_admin_user %}
+      <div class="sidebar-section admin-section">
+        <hr>
+        <a class="btn btn-block" href="{% url 'shop:category_add' %}">+ Add Category</a>
+        <a class="btn btn-block" href="{% url 'shop:product_add' %}">+ Add Product</a>
+      </div>
+      {% endif %}
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="catalog-main">
+    <div class="catalog-header">
+      <h1>Catalog {% if current_category %} - {{ current_category.name }}{% endif %}</h1>
+      <span class="product-count">{{ products|length }} product(s)</span>
+    </div>
+
+    <div class="products-grid">
+      {% for p in products %}
+        <article class="product-card">
+          <a href="{% url 'shop:product_detail' p.slug %}" class="card-link">
+            {% if p.main_image %}
+              <div class="product-image">
+                <img src="{{ p.main_image.image.url }}" alt="{{ p.name }}">
+              </div>
+            {% else %}
+              <div class="product-image placeholder">No image</div>
+            {% endif %}
+            <div class="product-meta">
+              <h3>{{ p.name }}</h3>
+              <p class="price">${{ p.price }}</p>
+            </div>
+          </a>
+          <p class="description">{{ p.description|truncatechars:100 }}</p>
+        </article>
+      {% empty %}
+        <div class="no-products">
+          <p>No products match your filters.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </main>
+</div>
+{% endblock %}

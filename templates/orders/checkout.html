@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Checkout - CI-CD Store{% endblock %}
+
+{% block content %}
+<style>
+    .checkout-container {
+        max-width: 1000px;
+        margin: 30px auto;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 30px;
+    }
+
+    .payment-form {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .payment-form h2 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #555;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        font-family: Arial, sans-serif;
+    }
+
+    .payment-methods {
+        margin-bottom: 20px;
+    }
+
+    .payment-method-item {
+        margin-bottom: 12px;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: white;
+    }
+
+    .payment-method-item input[type="radio"] {
+        margin-right: 10px;
+    }
+
+    .payment-method-item label {
+        display: inline;
+        margin: 0;
+        font-weight: normal;
+    }
+
+    .submit-btn {
+        background: #28a745;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background: #218838;
+    }
+
+    .order-summary {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        height: fit-content;
+        position: sticky;
+        top: 20px;
+    }
+
+    .order-summary h3 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .cart-item {
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+
+    .item-name {
+        flex: 1;
+    }
+
+    .item-quantity {
+        margin: 0 10px;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .item-price {
+        font-weight: 500;
+        min-width: 80px;
+        text-align: right;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .summary-row.total {
+        border-bottom: none;
+        border-top: 2px solid #333;
+        margin-top: 12px;
+        padding-top: 16px;
+        font-weight: bold;
+        font-size: 18px;
+        color: #28a745;
+    }
+
+    @media (max-width: 768px) {
+        .checkout-container {
+            grid-template-columns: 1fr;
+        }
+
+        .order-summary {
+            position: static;
+        }
+    }
+</style>
+
+<div class="checkout-container">
+    <div class="payment-form">
+        <h2>Checkout</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Payment Method</label>
+                <div class="payment-methods">
+                    {% for method, label in form.payment_method.field.choices %}
+                    <div class="payment-method-item">
+                        <input type="radio" id="id_method_{{ forloop.counter }}" name="payment_method" value="{{ method }}" {% if form.payment_method.value == method %}checked{% endif %}>
+                        <label for="id_method_{{ forloop.counter }}">{{ label }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+
+            <button type="submit" class="submit-btn">Place Order</button>
+        </form>
+    </div>
+
+    <div class="order-summary">
+        <h3>Order Summary</h3>
+
+        {% for item in cart_items %}
+        <div class="cart-item">
+            <span class="item-name">{{ item.product.name }}</span>
+            <span class="item-quantity">× {{ item.quantity }}</span>
+            <span class="item-price">${{ item.get_total_price }}</span>
+        </div>
+        {% endfor %}
+
+        <div class="summary-row total">
+            <span>Total:</span>
+            <span>${{ total_price }}</span>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
