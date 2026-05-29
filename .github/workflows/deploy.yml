@@ -38,7 +38,7 @@ jobs:
         run: gh pr merge ${{ github.event.pull_request.number }} --merge --repo ${{ github.repository }}
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [build-and-test]
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     steps:
